@@ -37,7 +37,8 @@ dependencies {
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
-	testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+	testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
+	testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.2")
 
 	implementation("org.springframework.boot:spring-boot-starter-log4j2")
 	configurations {
