@@ -30,8 +30,9 @@ public class JwtFilter extends OncePerRequestFilter {
             HttpServletRequest request, HttpServletResponse response, FilterChain filterChain
     ) throws ServletException, IOException {
         Integer id = mTokenService.extractIdFromToken();
-        if (id != null)
+        if (id != null) {
             authenticateFromId(id, request);
+        }
         filterChain.doFilter(request, response);
     }
 

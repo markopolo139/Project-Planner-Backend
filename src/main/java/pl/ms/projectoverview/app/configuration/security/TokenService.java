@@ -122,10 +122,12 @@ public class TokenService {
 
         if (authHeader == null) return null;
 
-        if (authHeader.startsWith("Bearer "))
+        if (authHeader.startsWith("Bearer ")) {
             return authHeader.substring(7);
-        else
+        }
+        else {
             return null;
+        }
     }
 
     private JwtBuilder configure(JwtBuilder builder, long validity) {

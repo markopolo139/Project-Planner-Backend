@@ -48,14 +48,18 @@ public class JwtConf {
     }
 
     private void initKey() {
-        if (secret.isBlank())
+        if (secret.isBlank()) {
             key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-        else
+        }
+        else {
             key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+        }
     }
 
     public SecretKey getKey() {
-        if (key == null) initKey();
+        if (key == null) {
+            initKey();
+        }
         return key;
     }
 
@@ -71,7 +75,9 @@ public class JwtConf {
 
 
     public Long getValidity() {
-        if (validity == null) initValidity();
+        if (validity == null) {
+            initValidity();
+        }
         return validity;
     }
 
@@ -87,7 +93,9 @@ public class JwtConf {
 
 
     public Long getPasswordRecoveryValidity() {
-        if (passwordRecoveryValidity == null) initPasswordRecoveryValidity();
+        if (passwordRecoveryValidity == null) {
+            initPasswordRecoveryValidity();
+        }
         return passwordRecoveryValidity;
     }
 

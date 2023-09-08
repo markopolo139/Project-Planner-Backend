@@ -51,8 +51,9 @@ public class UserEntity extends User {
         }
 
         private void validate() throws InvalidUserException {
-            if (username.isBlank() || password.isBlank() || email.isBlank() || authorities.isEmpty() || id < 0)
+            if (username.isBlank() || password.isBlank() || email.isBlank() || authorities.isEmpty() || id < 0) {
                 throw new InvalidUserException();
+            }
         }
 
         public UserEntity build() throws InvalidUserException {
