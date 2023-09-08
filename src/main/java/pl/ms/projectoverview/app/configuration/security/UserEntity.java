@@ -18,6 +18,10 @@ public class UserEntity extends User {
         this.email = email;
     }
 
+    public static Builder customBuilder() {
+        return new Builder();
+    }
+
     public static class Builder {
         private String username;
         private String password;
@@ -60,10 +64,6 @@ public class UserEntity extends User {
             validate();
             return new UserEntity(username, password, authorities, id, email);
         }
-    }
-
-    public static Builder customBuilder() {
-        return new Builder();
     }
 
     public int getId() {
