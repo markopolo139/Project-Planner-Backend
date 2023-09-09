@@ -6,11 +6,11 @@ import pl.ms.projectoverview.app.exceptions.InvalidUserException;
 
 import java.util.*;
 
-public class UserEntity extends User {
+public class AppUserEntity extends User {
     private final int id;
     private final String email;
 
-    public UserEntity(
+    public AppUserEntity(
             String username, String password, Collection<? extends GrantedAuthority> authorities, int id, String email
     ) {
         super(username, password, authorities);
@@ -60,9 +60,9 @@ public class UserEntity extends User {
             }
         }
 
-        public UserEntity build() throws InvalidUserException {
+        public AppUserEntity build() throws InvalidUserException {
             validate();
-            return new UserEntity(username, password, authorities, id, email);
+            return new AppUserEntity(username, password, authorities, id, email);
         }
     }
 
@@ -77,7 +77,7 @@ public class UserEntity extends User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UserEntity that)) return false;
+        if (!(o instanceof AppUserEntity that)) return false;
         if (!super.equals(o)) return false;
         return getId() == that.getId() && Objects.equals(getEmail(), that.getEmail());
     }
