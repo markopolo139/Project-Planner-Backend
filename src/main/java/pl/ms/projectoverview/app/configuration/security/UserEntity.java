@@ -23,11 +23,11 @@ public class UserEntity extends User {
     }
 
     public static class Builder {
-        private String username;
-        private String password;
-        private List<GrantedAuthority> authorities;
-        private int id;
-        private String email;
+        private String username = "";
+        private String password = "";
+        private List<GrantedAuthority> authorities = Collections.emptyList();
+        private int id = -1;
+        private String email = "";
 
         public Builder setUsername(String username) {
             this.username = username;
