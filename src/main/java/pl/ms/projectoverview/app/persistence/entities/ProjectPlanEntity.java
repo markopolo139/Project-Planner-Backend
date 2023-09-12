@@ -11,7 +11,7 @@ import java.util.Set;
 @Table(name = "project_plans")
 public class ProjectPlanEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "project_plan_id")
     private Integer projectPlanId;
 
@@ -37,7 +37,7 @@ public class ProjectPlanEntity {
     private Set<String> points;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
     public ProjectPlanEntity(

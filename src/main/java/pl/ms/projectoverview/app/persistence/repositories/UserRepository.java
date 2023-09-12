@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ResponseBody;
 import pl.ms.projectoverview.app.persistence.entities.UserEntity;
 
 import java.util.Optional;
@@ -18,8 +17,11 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     Optional<UserEntity> findByEmail(String email);
 
-    @Query("select u from UserEntity u left join fetch u.projects left join u.projectPlans where u.userId = :userId")
-    Optional<UserEntity> fetchUserWithProjects(@Param("userId") Integer userId);
+    @Query("select u from UserEntity u left join fetch u.projects where u.userId = :userId")
+    UserEntity fetchProjects(@Param("userId") Integer userId);
+
+    @Query("select u from UserEntity u left join fetch u.projectPlans where u.userId = :userId")
+    UserEntity fetchProjectPlans(@Param("userId") Integer userId);
 
     @Modifying
     @Transactional

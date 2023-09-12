@@ -2,16 +2,16 @@ package pl.ms.projectoverview.app.persistence.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 
-//TODO: projects and plans (also function to add them)
 @Entity
 @Table(name = "app_users")
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Integer userId;
 
@@ -47,6 +47,8 @@ public class UserEntity {
         this.email = email;
         this.notificationToken = notificationToken;
         this.roles = roles;
+        projects = Collections.emptySet();
+        projectPlans = Collections.emptySet();
     }
 
     public UserEntity(
