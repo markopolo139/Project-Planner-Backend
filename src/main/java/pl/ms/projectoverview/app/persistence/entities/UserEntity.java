@@ -49,6 +49,20 @@ public class UserEntity {
         this.roles = roles;
     }
 
+    public UserEntity(
+            Integer userId, String username, String password, String email, String notificationToken,
+            Set<String> roles, Set<ProjectEntity> projects, Set<ProjectPlanEntity> projectPlans
+    ) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.notificationToken = notificationToken;
+        this.roles = roles;
+        this.projects = projects;
+        this.projectPlans = projectPlans;
+    }
+
     protected UserEntity() { }
 
     public void addProject(ProjectEntity project) {
