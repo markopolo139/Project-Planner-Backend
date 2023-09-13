@@ -32,4 +32,6 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity, Integer>
             @Param("startDateBegin") LocalDateTime dateOfStartBeginning, @Param("startDateEnd") LocalDateTime dateOfStartEnding,
             @Param("current") Boolean isCurrentProject, @Param("status") ProjectStatus projectStatus
     );
+
+    Boolean existsByProjectIdAndUser_UserId(Integer projectId, Integer userId);
 }

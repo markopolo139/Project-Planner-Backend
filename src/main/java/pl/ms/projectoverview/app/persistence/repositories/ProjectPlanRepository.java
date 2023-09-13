@@ -21,4 +21,6 @@ public interface ProjectPlanRepository extends JpaRepository<ProjectPlanEntity, 
                     "and (:language is null or pp.language = :language) "
     )
     List<ProjectPlanEntity> filterQuery(@Param("userId") Integer userId, @Param("language") String language);
+
+    Boolean existsByProjectPlanIdAndUser_UserId(Integer projectId, Integer userId);
 }
