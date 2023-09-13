@@ -209,6 +209,48 @@ public class GeneralPersistenceTest {
 
     @Order(8)
     @Test
+    void testExistProject() {
+        Assertions.assertTrue(mUserRepository.findByUsername("Marek").isPresent());
+        UserEntity user1 = mUserRepository.findByUsername("Marek").get();
+
+        Assertions.assertTrue(mUserRepository.findByUsername("Kamil").isPresent());
+        UserEntity user2 = mUserRepository.findByUsername("Kamil").get();
+
+        List<ProjectEntity> projects1 = mProjectRepository.findAllByUser_UserId(user1.getUserId());
+        List<ProjectEntity> projects2 = mProjectRepository.findAllByUser_UserId(user2.getUserId());
+
+        Assertions.assertTrue(mProjectRepository.existsByProjectIdAndUser_UserId(
+                projects1.get(0).getProjectId(), user1.getUserId()
+        ));
+
+        Assertions.assertFalse(mProjectRepository.existsByProjectIdAndUser_UserId(
+                projects2.get(0).getProjectId(), user1.getUserId()
+        ));
+    }
+
+    @Order(9)
+    @Test
+    void testExistProjectPlan() {
+        Assertions.assertTrue(mUserRepository.findByUsername("Marek").isPresent());
+        UserEntity user1 = mUserRepository.findByUsername("Marek").get();
+
+        Assertions.assertTrue(mUserRepository.findByUsername("Kamil").isPresent());
+        UserEntity user2 = mUserRepository.findByUsername("Kamil").get();
+
+        List<ProjectPlanEntity> projectPlans1 = mProjectPlanRepository.findAllByUser_UserId(user1.getUserId());
+        List<ProjectPlanEntity> projectPlans2 = mProjectPlanRepository.findAllByUser_UserId(user2.getUserId());
+
+        Assertions.assertTrue(mProjectPlanRepository.existsByProjectPlanIdAndUser_UserId(
+                projectPlans1.get(0).getProjectPlanId(), user1.getUserId()
+        ));
+
+        Assertions.assertFalse(mProjectPlanRepository.existsByProjectPlanIdAndUser_UserId(
+                projectPlans2.get(0).getProjectPlanId(), user1.getUserId()
+        ));
+    }
+
+    @Order(10)
+    @Test
     void cleanUp() {
         mUserRepository.deleteByEmail("marek@seget@wp.pl");
         mUserRepository.deleteByEmail("tomasz@seget@wp.pl");
