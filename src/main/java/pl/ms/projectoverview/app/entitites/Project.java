@@ -30,12 +30,10 @@ public class Project {
 
     private final Set<String> technologies;
 
-    private User user;
-
     public Project(
             Integer projectId, String githubLink, String title, String description, String language,
             LocalDateTime deadline, LocalDateTime dateOfStart, Boolean isCurrent, ProjectStatus projectStatus,
-            Set<String> features, Set<String> goals, Set<String> technologies, User user
+            Set<String> features, Set<String> goals, Set<String> technologies
     ) {
         this.projectId = projectId;
         this.githubLink = githubLink;
@@ -49,7 +47,6 @@ public class Project {
         this.features = features;
         this.goals = goals;
         this.technologies = technologies;
-        this.user = user;
     }
 
     public Integer getProjectId() {
@@ -128,13 +125,6 @@ public class Project {
         this.projectStatus = projectStatus;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -152,15 +142,14 @@ public class Project {
                 && getProjectStatus() == project.getProjectStatus()
                 && Objects.equals(getFeatures(), project.getFeatures())
                 && Objects.equals(getGoals(), project.getGoals())
-                && Objects.equals(getTechnologies(), project.getTechnologies())
-                && Objects.equals(getUser(), project.getUser());
+                && Objects.equals(getTechnologies(), project.getTechnologies());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
                 getProjectId(), getGithubLink(), getTitle(), getDescription(), getLanguage(), getDeadline(),
-                getDateOfStart(), isCurrent, getProjectStatus(), getFeatures(), getGoals(), getTechnologies(), getUser()
+                getDateOfStart(), isCurrent, getProjectStatus(), getFeatures(), getGoals(), getTechnologies()
         );
     }
 }

@@ -18,11 +18,9 @@ public class ProjectPlan {
 
     private Set<String> points;
 
-    private User user;
-
     public ProjectPlan(
             Integer projectPlanId, String title, String language, Set<String> features, Set<String> goals,
-            Set<String> points, User user
+            Set<String> points
     ) {
         this.projectPlanId = projectPlanId;
         this.title = title;
@@ -30,7 +28,6 @@ public class ProjectPlan {
         this.features = features;
         this.goals = goals;
         this.points = points;
-        this.user = user;
     }
 
     public Integer getProjectPlanId() {
@@ -65,14 +62,6 @@ public class ProjectPlan {
         this.language = language;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -83,12 +72,11 @@ public class ProjectPlan {
                 && Objects.equals(getLanguage(), that.getLanguage())
                 && Objects.equals(getFeatures(), that.getFeatures())
                 && Objects.equals(getGoals(), that.getGoals())
-                && Objects.equals(getPoints(), that.getPoints())
-                && Objects.equals(getUser(), that.getUser());
+                && Objects.equals(getPoints(), that.getPoints());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getProjectPlanId(), getTitle(), getLanguage(), getFeatures(), getGoals(), getPoints(), getUser());
+        return Objects.hash(getProjectPlanId(), getTitle(), getLanguage(), getFeatures(), getGoals(), getPoints());
     }
 }
