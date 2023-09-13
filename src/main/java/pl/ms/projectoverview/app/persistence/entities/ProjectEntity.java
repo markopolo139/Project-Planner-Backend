@@ -123,7 +123,7 @@ public class ProjectEntity {
         return deadline;
     }
 
-    public Boolean getCurrentProject() {
+    public Boolean isCurrentProject() {
         return isCurrentProject;
     }
 

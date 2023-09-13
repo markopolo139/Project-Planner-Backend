@@ -117,7 +117,7 @@ public class UserEntity {
         return email;
     }
 
-    public Boolean getHasNotificationToken() {
+    public Boolean hasNotificationToken() {
         return hasNotificationToken;
     }
 

@@ -186,6 +186,29 @@ public class GeneralPersistenceTest {
 
     @Order(7)
     @Test
+    void testSavingProjectWithUserSetOnlyWithId() {
+        Assertions.assertTrue(mUserRepository.findByUsername("Marek").isPresent());
+        Integer id1 = mUserRepository.findByUsername("Marek").get().getUserId();
+        ProjectEntity project = mProjectRepository.filterQuery(
+                id1, null, null , null, true, null
+        ).get(0);
+
+        UserEntity user = new UserEntity(
+                project.getUser().getUserId(), project.getUser().getUsername(), "",
+                project.getUser().getEmail(), false, Collections.emptySet(), Collections.emptySet()
+        );
+
+        ProjectEntity newProject = new ProjectEntity(
+                project.getProjectId(), project.getGithubLink(), project.getTitle(),
+                "321", project.getLanguage(), project.getDeadline(), project.getDateOfStart(), project.isCurrentProject(),
+                project.getProjectStatus(), project.getFeatures(), project.getGoals(), project.getTechnologies(), user
+        );
+
+        mProjectRepository.save(newProject);
+    }
+
+    @Order(8)
+    @Test
     void cleanUp() {
         mUserRepository.deleteByEmail("marek@seget@wp.pl");
         mUserRepository.deleteByEmail("tomasz@seget@wp.pl");
