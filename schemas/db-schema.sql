@@ -3,13 +3,21 @@ create table if not exists app_users (
     username varchar(64) unique not null,
     password varchar(255) not null,
     email varchar(127) unique not null,
-    notification_token varchar(255) null
+    has_notification_token boolean default false
 );
 
 create table if not exists app_users_roles (
     user_id int not null,
     role varchar(64) not null,
     constraint role_to_app_users foreign key(user_id) references app_users(user_id)
+        on delete CASCADE
+        on update CASCADE
+);
+
+create table if not exists app_users_notification_tokens (
+    user_id int not null,
+    notification_token varchar(255) not null,
+    constraint notification_token_to_app_users foreign key(user_id) references app_users(user_id)
         on delete CASCADE
         on update CASCADE
 );

@@ -24,13 +24,18 @@ public class UserEntity {
     @Column(name = "email", unique = true, nullable = false, length = 127)
     private String email;
 
-    @Column(name = "notification_token")
-    private String notificationToken;
+    @Column(name = "has_notification_token", nullable = false)
+    private Boolean hasNotificationToken;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "app_users_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role", nullable = false, length = 64)
     private Set<String> roles;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "app_users_notification_tokens", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "notification_token", nullable = false)
+    private Set<String> notificationTokens;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<ProjectEntity> projects;
@@ -39,28 +44,31 @@ public class UserEntity {
     private Set<ProjectPlanEntity> projectPlans;
 
     public UserEntity(
-            Integer userId, String username, String password, String email, String notificationToken, Set<String> roles
+            Integer userId, String username, String password, String email, Boolean hasNotificationToken,
+            Set<String> roles, Set<String> notificationTokens
     ) {
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.email = email;
-        this.notificationToken = notificationToken;
+        this.hasNotificationToken = hasNotificationToken;
         this.roles = roles;
+        this.notificationTokens = notificationTokens;
         projects = Collections.emptySet();
         projectPlans = Collections.emptySet();
     }
 
     public UserEntity(
-            Integer userId, String username, String password, String email, String notificationToken,
-            Set<String> roles, Set<ProjectEntity> projects, Set<ProjectPlanEntity> projectPlans
+            Integer userId, String username, String password, String email, Boolean hasNotificationToken, Set<String> roles,
+            Set<String> notificationTokens, Set<ProjectEntity> projects, Set<ProjectPlanEntity> projectPlans
     ) {
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.email = email;
-        this.notificationToken = notificationToken;
+        this.hasNotificationToken = hasNotificationToken;
         this.roles = roles;
+        this.notificationTokens = notificationTokens;
         this.projects = projects;
         this.projectPlans = projectPlans;
     }
@@ -89,6 +97,10 @@ public class UserEntity {
         return roles;
     }
 
+    public Set<String> getNotificationTokens() {
+        return notificationTokens;
+    }
+
     public Set<ProjectEntity> getProjects() {
         return projects;
     }
@@ -113,12 +125,12 @@ public class UserEntity {
         this.email = email;
     }
 
-    public String getNotificationToken() {
-        return notificationToken;
+    public Boolean getHasNotificationToken() {
+        return hasNotificationToken;
     }
 
-    public void setNotificationToken(String notificationToken) {
-        this.notificationToken = notificationToken;
+    public void setHasNotificationToken(Boolean hasNotificationToken) {
+        this.hasNotificationToken = hasNotificationToken;
     }
 
     @Override

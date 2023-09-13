@@ -32,17 +32,17 @@ public class GeneralPersistenceTest {
     void saveUserTest() {
         UserEntity user1 = new UserEntity(
                 0,"Marek", "123", "marek@seget@wp.pl",
-                "token1", new HashSet<>() {{ add("ADMIN"); add("USER"); }}
+                true, new HashSet<>() {{ add("ADMIN"); add("USER"); }}, Set.of("token1")
         );
 
         UserEntity user2 = new UserEntity(
                 0,"Tomasz", "123", "tomasz@seget@wp.pl",
-                null, new HashSet<>() {{ add("USER"); }}
+                false, new HashSet<>() {{ add("USER"); }}, Collections.emptySet()
         );
 
         UserEntity user3 = new UserEntity(
                 0,"Kamil", "123", "kamil@seget@wp.pl",
-                "token2", new HashSet<>() {{ add("USER"); }}
+                true, new HashSet<>() {{ add("USER"); }}, Set.of("token2")
         );
 
         mUserRepository.saveAll(Arrays.asList(user1, user2, user3));

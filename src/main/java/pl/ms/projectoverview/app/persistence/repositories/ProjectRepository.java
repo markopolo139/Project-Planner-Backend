@@ -16,7 +16,7 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity, Integer>
 
     List<ProjectEntity> findAllByUser_UserId(Integer userId);
 
-    @Query("select p from ProjectEntity p left join p.user u where u.notificationToken != null and p.deadline != null ")
+    @Query("select p from ProjectEntity p left join p.user u where u.hasNotificationToken and p.deadline != null ")
     List<ProjectEntity> findAllForNotification();
 
     @Query(
