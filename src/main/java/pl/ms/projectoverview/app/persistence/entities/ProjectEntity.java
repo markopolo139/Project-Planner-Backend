@@ -107,56 +107,28 @@ public class ProjectEntity {
         return githubLink;
     }
 
-    public void setGithubLink(String githubLink) {
-        this.githubLink = githubLink;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getLanguage() {
         return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
     }
 
     public LocalDateTime getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDateTime deadline) {
-        this.deadline = deadline;
-    }
-
     public Boolean getCurrentProject() {
         return isCurrentProject;
     }
 
-    public void setCurrentProject(Boolean currentProject) {
-        isCurrentProject = currentProject;
-    }
-
     public ProjectStatus getProjectStatus() {
         return projectStatus;
-    }
-
-    public void setProjectStatus(ProjectStatus projectStatus) {
-        this.projectStatus = projectStatus;
     }
 
     public UserEntity getUser() {
