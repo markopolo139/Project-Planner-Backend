@@ -109,7 +109,7 @@ public class Project {
         this.deadline = deadline;
     }
 
-    public Boolean getCurrent() {
+    public Boolean isCurrent() {
         return isCurrent;
     }
 
