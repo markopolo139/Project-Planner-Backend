@@ -6,17 +6,17 @@ import java.util.Objects;
 import java.util.Set;
 
 public class ProjectPlan {
-    private Integer projectPlanId;
+    private final Integer projectPlanId;
 
     private String title;
 
     private String language;
 
-    private Set<String> features;
+    private final Set<String> features;
 
-    private Set<String> goals;
+    private final Set<String> goals;
 
-    private Set<String> points;
+    private final Set<String> points;
 
     public ProjectPlan(
             Integer projectPlanId, String title, String language, Set<String> features, Set<String> goals,
