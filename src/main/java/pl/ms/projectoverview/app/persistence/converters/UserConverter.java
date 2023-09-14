@@ -1,5 +1,6 @@
 package pl.ms.projectoverview.app.persistence.converters;
 
+import org.springframework.stereotype.Component;
 import pl.ms.projectoverview.app.configuration.security.AppUserEntity;
 import pl.ms.projectoverview.app.exceptions.InvalidUserException;
 import pl.ms.projectoverview.app.persistence.entities.UserEntity;
@@ -7,6 +8,7 @@ import pl.ms.projectoverview.app.persistence.entities.UserEntity;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
+@Component
 public class UserConverter implements Converter<AppUserEntity, UserEntity> {
     @Override
     public AppUserEntity convertToApp(UserEntity userEntity) {
