@@ -1,7 +1,9 @@
 package pl.ms.projectoverview.app.configuration.security;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.util.Assert;
 import pl.ms.projectoverview.app.exceptions.InvalidUserException;
 
 import java.util.*;
@@ -39,8 +41,14 @@ public class AppUserEntity extends User {
             return this;
         }
 
-        public Builder setAuthorities(Collection<? extends GrantedAuthority> authorities) {
-            this.authorities = new ArrayList<>(authorities);
+        public Builder setAuthorities(String... roles) {
+            List<GrantedAuthority> authorities = new ArrayList<>(roles.length);
+            for (String role : roles) {
+                Assert.isTrue(!role.startsWith("ROLE_"),
+                        () -> role + " cannot start with ROLE_ (it is automatically added)");
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+            }
+            this.authorities = authorities;
             return this;
         }
 
