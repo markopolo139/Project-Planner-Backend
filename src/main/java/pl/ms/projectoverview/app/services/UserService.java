@@ -2,20 +2,18 @@ package pl.ms.projectoverview.app.services;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.ms.projectoverview.app.exceptions.UserAlreadyExistsException;
-import pl.ms.projectoverview.app.exceptions.UserNotFound;
+import pl.ms.projectoverview.app.exceptions.UserNotFoundException;
 import pl.ms.projectoverview.app.persistence.converters.UserConverter;
 import pl.ms.projectoverview.app.persistence.entities.UserEntity;
 import pl.ms.projectoverview.app.persistence.repositories.UserRepository;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -49,17 +47,17 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public UserDetails loadUserById(Integer id) throws UserNotFound {
+    public UserDetails loadUserById(Integer id) throws UserNotFoundException {
         if (id == null) {
             mLogger.error("Id is null");
-            throw new UserNotFound();
+            throw new UserNotFoundException();
         }
 
         try {
             return mUserConverter.convertToApp(mUserRepository.findById(id).orElseThrow());
         } catch (NoSuchElementException ex) {
             mLogger.error("Given username is not present");
-            throw new UserNotFound();
+            throw new UserNotFoundException();
         }
     }
 
