@@ -4,6 +4,5 @@ public enum ProjectStatus {
     ACTIVE,
     BREAK,
     CANCELED,
-    UPCOMING,
-    PENDING
+    WORKING_ON
 }
