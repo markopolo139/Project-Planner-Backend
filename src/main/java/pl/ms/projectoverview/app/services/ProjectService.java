@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.ms.projectoverview.app.entitites.Project;
 import pl.ms.projectoverview.app.entitites.ProjectStatus;
 import pl.ms.projectoverview.app.exceptions.NotCurrentUserProjectException;
+import pl.ms.projectoverview.app.exceptions.TitleNotFoundException;
 import pl.ms.projectoverview.app.exceptions.UserNotFoundException;
 import pl.ms.projectoverview.app.persistence.converters.ProjectConverter;
 import pl.ms.projectoverview.app.persistence.entities.ProjectEntity;
@@ -76,5 +77,17 @@ public class ProjectService {
 
     public List<Project> getUserProjects() {
         return mProjectConverter.convertToApp(mProjectRepository.findAllByUser_UserId(userId));
+    }
+
+    public Project getByTitle(String title) throws TitleNotFoundException, NotCurrentUserProjectException {
+        Project project = mProjectConverter.convertToApp(
+                mProjectRepository.findByTitle(title).orElseThrow(TitleNotFoundException::new)
+        );
+        if (!mProjectRepository.existsByProjectIdAndUser_UserId(project.getProjectId(), userId)) {
+            mLogger.error("Selected project does not belong to logged in user");
+            throw new NotCurrentUserProjectException();
+        }
+
+        return project;
     }
 }

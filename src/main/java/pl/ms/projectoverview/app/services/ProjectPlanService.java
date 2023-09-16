@@ -3,9 +3,12 @@ package pl.ms.projectoverview.app.services;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
+import pl.ms.projectoverview.app.entitites.Project;
 import pl.ms.projectoverview.app.entitites.ProjectPlan;
 import pl.ms.projectoverview.app.entitites.ProjectStatus;
+import pl.ms.projectoverview.app.exceptions.NotCurrentUserProjectException;
 import pl.ms.projectoverview.app.exceptions.NotCurrentUserProjectPlanException;
+import pl.ms.projectoverview.app.exceptions.TitleNotFoundException;
 import pl.ms.projectoverview.app.exceptions.UserNotFoundException;
 import pl.ms.projectoverview.app.persistence.converters.ProjectConverter;
 import pl.ms.projectoverview.app.persistence.converters.ProjectPlanConverter;
@@ -76,6 +79,18 @@ public class ProjectPlanService {
 
     public List<ProjectPlan> getUserProjectPlans() {
         return mProjectPlanConverter.convertToApp(mProjectPlanRepository.findAllByUser_UserId(userId));
+    }
+
+    public ProjectPlan getByTitle(String title) throws TitleNotFoundException, NotCurrentUserProjectException {
+        ProjectPlan plan = mProjectPlanConverter.convertToApp(
+                mProjectPlanRepository.findByTitle(title).orElseThrow(TitleNotFoundException::new)
+        );
+        if (!mProjectPlanRepository.existsByProjectPlanIdAndUser_UserId(plan.getProjectPlanId(), userId)) {
+            mLogger.error("Selected project does not belong to logged in user");
+            throw new NotCurrentUserProjectException();
+        }
+
+        return plan;
     }
 
     public void transformProjectToEntity(

@@ -9,10 +9,13 @@ import pl.ms.projectoverview.app.persistence.entities.ProjectEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<ProjectEntity, Integer> {
+
+    Optional<ProjectEntity> findByTitle(String title);
 
     List<ProjectEntity> findAllByUser_UserId(Integer userId);
 
