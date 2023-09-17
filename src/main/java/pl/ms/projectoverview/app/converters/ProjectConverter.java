@@ -1,11 +1,11 @@
 package pl.ms.projectoverview.app.converters;
 
 
-import org.springframework.stereotype.Component;
 import pl.ms.projectoverview.app.entitites.Project;
 import pl.ms.projectoverview.app.persistence.entities.ProjectEntity;
 import pl.ms.projectoverview.app.persistence.entities.UserEntity;
 import pl.ms.projectoverview.web.models.ProjectModel;
+import pl.ms.projectoverview.web.models.ProjectPlanModel;
 
 import java.util.List;
 
@@ -41,12 +41,23 @@ public class ProjectConverter {
         return projects.stream().map(it -> convertToEntity(it, userEntity)).toList();
     }
 
-    public static Project convertModelToApp(ProjectModel entity) {
-        return null;
+    public static Project convertModelToApp(ProjectModel model) {
+        return new Project(
+                model.getProjectId(), model.getGithubLink(), model.getTitle(), model.getDescription(), model.getLanguage(),
+                model.getDeadline(), model.getDateOfStart(), model.getCurrent(), model.getProjectStatus(),
+                model.getFeatures(), model.getGoals(), model.getTechnologies()
+        );
+
     }
 
     public static ProjectModel convertToModel(Project appEntity) {
-        return null;
+        return new ProjectModel(
+                appEntity.getProjectId(), appEntity.getGithubLink(), appEntity.getTitle(),
+                appEntity.getDescription(), appEntity.getLanguage(), appEntity.getDeadline(),
+                appEntity.getDateOfStart(), appEntity.isCurrent(), appEntity.getProjectStatus(),
+                appEntity.getFeatures(), appEntity.getGoals(), appEntity.getTechnologies()
+        );
+
     }
 
     public static List<Project> convertEntityToApp(List<ProjectEntity> entities) {

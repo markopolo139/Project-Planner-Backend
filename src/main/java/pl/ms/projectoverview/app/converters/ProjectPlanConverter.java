@@ -22,12 +22,19 @@ public class ProjectPlanConverter{
         );
     }
 
-    public static ProjectPlan convertModelToApp(ProjectPlanModel entity) {
-        return null;
+    public static ProjectPlan convertModelToApp(ProjectPlanModel model) {
+        return new ProjectPlan(
+                model.getProjectPlanId(), model.getTitle(), model.getLanguage(), model.getFeatures(), model.getGoals(),
+                model.getPoints()
+        );
     }
 
     public static ProjectPlanModel convertToModel(ProjectPlan appEntity) {
-        return null;
+        return new ProjectPlanModel(
+                appEntity.getProjectPlanId(), appEntity.getTitle(), appEntity.getLanguage(), appEntity.getFeatures(),
+                appEntity.getGoals(), appEntity.getPoints()
+        );
+
     }
 
     public static List<ProjectPlan> convertEntityToApp(List<ProjectPlanEntity> entities) {
