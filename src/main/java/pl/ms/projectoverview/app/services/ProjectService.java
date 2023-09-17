@@ -17,6 +17,9 @@ import pl.ms.projectoverview.app.persistence.repositories.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static pl.ms.projectoverview.app.converters.ProjectConverter.convertEntityToApp;
+import static pl.ms.projectoverview.app.converters.ProjectConverter.convertToEntity;
+
 @Service
 public class ProjectService {
 
@@ -24,20 +27,15 @@ public class ProjectService {
 
     private final ProjectRepository mProjectRepository;
 
-    private final ProjectConverter mProjectConverter;
-
     private final UserRepository mUserRepository;
 
-    private final Integer userId = AppUtils.getUserId();
-
-    public ProjectService(ProjectRepository mProjectRepository, ProjectConverter mProjectConverter, UserRepository userRepository) {
+    public ProjectService(ProjectRepository mProjectRepository, UserRepository userRepository) {
         this.mProjectRepository = mProjectRepository;
-        this.mProjectConverter = mProjectConverter;
         this.mUserRepository = userRepository;
     }
 
     public void createProject(Project project) throws UserNotFoundException {
-        ProjectEntity newProject = mProjectConverter.convertToEntity(project);
+        ProjectEntity newProject = convertToEntity(project);
         UserEntity loggedInUser = AppUtils.getCurrentUser(mUserRepository);
         loggedInUser.addProject(newProject);
 
@@ -47,15 +45,15 @@ public class ProjectService {
     public void createProjects(List<Project> projects) throws UserNotFoundException {
         UserEntity loggedInUser = AppUtils.getCurrentUser(mUserRepository);
         loggedInUser.getProjects().addAll(
-                mProjectConverter.convertToEntity(projects,loggedInUser)
+                convertToEntity(projects,loggedInUser)
         );
 
         mUserRepository.save(loggedInUser);
     }
 
     public void updateProject(Project project) throws UserNotFoundException, NotCurrentUserProjectException {
-        ProjectEntity updateProject = mProjectConverter.convertToEntity(project);
-        if (!mProjectRepository.existsByProjectIdAndUser_UserId(updateProject.getProjectId(), userId)) {
+        ProjectEntity updateProject = convertToEntity(project);
+        if (!mProjectRepository.existsByProjectIdAndUser_UserId(updateProject.getProjectId(), AppUtils.getUserId())) {
             mLogger.error("Selected project does not belong to logged in user");
             throw new NotCurrentUserProjectException();
         }
@@ -68,22 +66,23 @@ public class ProjectService {
             String language, LocalDateTime dateOfStartBeginning, LocalDateTime dateOfStartEnding,
             Boolean isCurrentProject, ProjectStatus projectStatus
     ) {
-        return mProjectConverter.convertEntityToApp(
+        return convertEntityToApp(
                 mProjectRepository.filterQuery(
-                        userId, language, dateOfStartBeginning, dateOfStartEnding, isCurrentProject, projectStatus
+                        AppUtils.getUserId(), language, dateOfStartBeginning, dateOfStartEnding, isCurrentProject,
+                        projectStatus
                 )
         );
     }
 
     public List<Project> getUserProjects() {
-        return mProjectConverter.convertEntityToApp(mProjectRepository.findAllByUser_UserId(userId));
+        return convertEntityToApp(mProjectRepository.findAllByUser_UserId(AppUtils.getUserId()));
     }
 
     public Project getByTitle(String title) throws TitleNotFoundException, NotCurrentUserProjectException {
-        Project project = mProjectConverter.convertEntityToApp(
+        Project project = convertEntityToApp(
                 mProjectRepository.findByTitle(title).orElseThrow(TitleNotFoundException::new)
         );
-        if (!mProjectRepository.existsByProjectIdAndUser_UserId(project.getProjectId(), userId)) {
+        if (!mProjectRepository.existsByProjectIdAndUser_UserId(project.getProjectId(), AppUtils.getUserId())) {
             mLogger.error("Selected project does not belong to logged in user");
             throw new NotCurrentUserProjectException();
         }

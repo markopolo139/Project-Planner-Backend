@@ -8,10 +8,9 @@ import pl.ms.projectoverview.app.persistence.entities.UserEntity;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
-@Component
-public class UserConverter implements Converter<AppUserEntity, UserEntity, Object> {
-    @Override
-    public AppUserEntity convertEntityToApp(UserEntity userEntity) {
+public class UserConverter{
+
+    public static AppUserEntity convertEntityToApp(UserEntity userEntity) {
         if (userEntity == null) {
             return null;
         }
@@ -29,8 +28,7 @@ public class UserConverter implements Converter<AppUserEntity, UserEntity, Objec
         }
     }
 
-    @Override
-    public UserEntity convertToEntity(AppUserEntity appEntity) {
+    public static UserEntity convertToEntity(AppUserEntity appEntity) {
         if (appEntity == null) {
             return null;
         }
@@ -44,13 +42,4 @@ public class UserConverter implements Converter<AppUserEntity, UserEntity, Objec
         );
     }
 
-    @Override
-    public AppUserEntity convertModelToApp(Object entity) {
-        return null;
-    }
-
-    @Override
-    public Object convertToModel(AppUserEntity appEntity) {
-        return null;
-    }
 }

@@ -5,31 +5,43 @@ import pl.ms.projectoverview.app.entitites.ProjectPlan;
 import pl.ms.projectoverview.app.persistence.entities.ProjectPlanEntity;
 import pl.ms.projectoverview.web.models.ProjectPlanModel;
 
-@Component
-public class ProjectPlanConverter implements Converter<ProjectPlan, ProjectPlanEntity, ProjectPlanModel> {
-    @Override
-    public ProjectPlan convertEntityToApp(ProjectPlanEntity projectPlan) {
+import java.util.List;
+
+public class ProjectPlanConverter{
+    public static ProjectPlan convertEntityToApp(ProjectPlanEntity projectPlan) {
         return new ProjectPlan(
                 projectPlan.getProjectPlanId(), projectPlan.getTitle(), projectPlan.getLanguage(),
                 projectPlan.getFeatures(), projectPlan.getGoals(), projectPlan.getPoints()
         );
     }
 
-    @Override
-    public ProjectPlanEntity convertToEntity(ProjectPlan appEntity) {
+    public static ProjectPlanEntity convertToEntity(ProjectPlan appEntity) {
         return new ProjectPlanEntity(
                 appEntity.getProjectPlanId(), appEntity.getTitle(), appEntity.getLanguage(),
                 appEntity.getFeatures(), appEntity.getGoals(), appEntity.getPoints(), null
         );
     }
 
-    @Override
-    public ProjectPlan convertModelToApp(ProjectPlanModel entity) {
+    public static ProjectPlan convertModelToApp(ProjectPlanModel entity) {
         return null;
     }
 
-    @Override
-    public ProjectPlanModel convertToModel(ProjectPlan appEntity) {
+    public static ProjectPlanModel convertToModel(ProjectPlan appEntity) {
         return null;
+    }
+
+    public static List<ProjectPlan> convertEntityToApp(List<ProjectPlanEntity> entities) {
+        return entities.stream().map(ProjectPlanConverter::convertEntityToApp).toList();
+    }
+
+    public static List<ProjectPlanEntity> convertToEntity(List<ProjectPlan> appEntities) {
+        return appEntities.stream().map(ProjectPlanConverter::convertToEntity).toList();
+    }
+    public static List<ProjectPlan> convertModelToApp(List<ProjectPlanModel> models) {
+        return models.stream().map(ProjectPlanConverter::convertModelToApp).toList();
+    }
+
+    public static List<ProjectPlanModel> convertToModel(List<ProjectPlan> appEntities) {
+        return appEntities.stream().map(ProjectPlanConverter::convertToModel).toList();
     }
 }

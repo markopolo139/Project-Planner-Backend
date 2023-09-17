@@ -11,7 +11,6 @@ public class NotificationService {
 
     private final Logger mLogger = LogManager.getLogger();
     private final UserRepository mUserRepository;
-    private final Integer userId = AppUtils.getUserId();
 
     public NotificationService(UserRepository userRepository) {
         mUserRepository = userRepository;

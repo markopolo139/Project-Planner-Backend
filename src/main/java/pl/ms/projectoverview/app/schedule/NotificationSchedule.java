@@ -9,32 +9,31 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import pl.ms.projectoverview.app.entitites.Project;
-import pl.ms.projectoverview.app.persistence.converters.ProjectConverter;
-import pl.ms.projectoverview.app.persistence.entities.ProjectEntity;
+import pl.ms.projectoverview.app.converters.ProjectConverter;
 import pl.ms.projectoverview.app.persistence.repositories.ProjectRepository;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import static pl.ms.projectoverview.app.converters.ProjectConverter.convertEntityToApp;
+
 @Component
 public class NotificationSchedule {
     private final Logger mLogger = LogManager.getLogger();
     private final ProjectRepository mProjectRepository;
     private final FirebaseMessaging mFirebaseMessaging;
-    private final ProjectConverter mProjectConverter;
 
     public NotificationSchedule(
-            ProjectRepository projectRepository, FirebaseMessaging firebaseMessaging, ProjectConverter projectConverter
+            ProjectRepository projectRepository, FirebaseMessaging firebaseMessaging
     ) {
         mProjectRepository = projectRepository;
         mFirebaseMessaging = firebaseMessaging;
-        mProjectConverter = projectConverter;
     }
 
     @Scheduled(cron = "0 0 12 * * ?")
     public void sendNotifications() {
-        List<Project> projects = mProjectConverter.convertToApp(mProjectRepository.findAllForNotification());
+        List<Project> projects = convertEntityToApp(mProjectRepository.findAllForNotification());
         projects.forEach((it) -> {
             try {
                 mFirebaseMessaging.send(createNotification(

@@ -15,14 +15,12 @@ import pl.ms.projectoverview.app.persistence.entities.ProjectPlanEntity;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@SpringBootTest
+import static pl.ms.projectoverview.app.converters.ProjectConverter.convertEntityToApp;
+import static pl.ms.projectoverview.app.converters.ProjectPlanConverter.convertEntityToApp;
+import static pl.ms.projectoverview.app.converters.ProjectConverter.convertToEntity;
+import static pl.ms.projectoverview.app.converters.ProjectPlanConverter.convertToEntity;
+
 public class ConverterTest {
-
-    @Autowired
-    private ProjectConverter mProjectConverter;
-
-    @Autowired
-    private ProjectPlanConverter mProjectPlanConverter;
 
     private final LocalDateTime date = LocalDateTime.now();
 
@@ -49,8 +47,8 @@ public class ConverterTest {
 
     @Test
     void testProjectConverter() {
-        Project convertedApp = mProjectConverter.convertEntityToApp(projectEntity);
-        ProjectEntity convertedEntity = mProjectConverter.convertToEntity(project);
+        Project convertedApp = convertEntityToApp(projectEntity);
+        ProjectEntity convertedEntity = convertToEntity(project);
 
         Assertions.assertEquals(project, convertedApp);
         Assertions.assertEquals(projectEntity, convertedEntity);
@@ -58,8 +56,8 @@ public class ConverterTest {
 
     @Test
     void testProjectPlanConverter() {
-        ProjectPlan convertedApp = mProjectPlanConverter.convertEntityToApp(projectPlanEntity);
-        ProjectPlanEntity convertedEntity = mProjectPlanConverter.convertToEntity(projectPlan);
+        ProjectPlan convertedApp = convertEntityToApp(projectPlanEntity);
+        ProjectPlanEntity convertedEntity = convertToEntity(projectPlan);
 
         Assertions.assertEquals(projectPlan, convertedApp);
         Assertions.assertEquals(projectPlanEntity, convertedEntity);

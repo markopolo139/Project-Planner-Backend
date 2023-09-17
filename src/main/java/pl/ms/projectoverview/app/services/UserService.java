@@ -17,19 +17,20 @@ import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import static pl.ms.projectoverview.app.converters.UserConverter.convertEntityToApp;
+
 @Service
 public class UserService implements UserDetailsService {
 
     private final Logger mLogger = LogManager.getLogger();
-    private final UserRepository mUserRepository;
-    private final UserConverter mUserConverter;
-    private final PasswordEncoder mPasswordEncoder;
-    private final Integer userId = AppUtils.getUserId();
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserConverter userConverter) {
+    private final UserRepository mUserRepository;
+
+    private final PasswordEncoder mPasswordEncoder;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         mUserRepository = userRepository;
         mPasswordEncoder = passwordEncoder;
-        mUserConverter = userConverter;
     }
 
     @Override
@@ -40,7 +41,7 @@ public class UserService implements UserDetailsService {
         }
 
         try {
-            return mUserConverter.convertEntityToApp(mUserRepository.findByUsername(username).orElseThrow());
+            return convertEntityToApp(mUserRepository.findByUsername(username).orElseThrow());
         } catch (NoSuchElementException ex) {
             mLogger.error("Given username is not present");
             throw new UsernameNotFoundException("Given username is not present");
@@ -54,7 +55,7 @@ public class UserService implements UserDetailsService {
         }
 
         try {
-            return mUserConverter.convertEntityToApp(mUserRepository.findById(id).orElseThrow());
+            return convertEntityToApp(mUserRepository.findById(id).orElseThrow());
         } catch (NoSuchElementException ex) {
             mLogger.error("Given username is not present");
             throw new UserNotFoundException();
@@ -76,6 +77,6 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteUser() {
-        mUserRepository.deleteById(userId);
+        mUserRepository.deleteById(AppUtils.getUserId());
     }
 }
