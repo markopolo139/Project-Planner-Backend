@@ -2,17 +2,19 @@ package pl.ms.projectoverview.web.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import pl.ms.projectoverview.app.exceptions.InvalidUserException;
+import pl.ms.projectoverview.app.exceptions.*;
 
 import java.util.List;
 
@@ -88,6 +90,82 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
                 ApiError.builder()
                         .setSuggestedAction("Pass correct values for user creation")
                         .setErrorMessage(ex.getMessage())
+                        .setHttpStatus(HttpStatus.BAD_REQUEST)
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<Object> usernameNotFoundExceptionHandler(UsernameNotFoundException ex) {
+        return mapToResponse(
+                ApiError.builder()
+                        .setSuggestedAction("Type correct username")
+                        .setErrorMessage(ex.getMessage())
+                        .setHttpStatus(HttpStatus.BAD_REQUEST)
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(InvalidJwtTokenException.class)
+    public ResponseEntity<Object> invalidJwtTokenExceptionHandler(InvalidJwtTokenException ex) {
+        return mapToResponse(
+                ApiError.builder()
+                        .setSuggestedAction("Type correct token")
+                        .setErrorMessage(ex.getMessage())
+                        .setHttpStatus(HttpStatus.BAD_REQUEST)
+                        .build()
+        );
+    }
+
+
+    @ExceptionHandler(NotCurrentUserProjectException.class)
+    public ResponseEntity<Object> NotCurrentUserProjectExceptionHandler(NotCurrentUserProjectException ex) {
+        return mapToResponse(
+                ApiError.builder()
+                        .setSuggestedAction("Give project id that belongs to current user")
+                        .setErrorMessage(ex.getMessage())
+                        .setHttpStatus(HttpStatus.BAD_REQUEST)
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(NotCurrentUserProjectPlanException.class)
+    public ResponseEntity<Object> notCurrentUserProjectPlanExceptionHandler(NotCurrentUserProjectPlanException ex) {
+        return mapToResponse(
+                ApiError.builder()
+                        .setSuggestedAction("Give project plan id that belongs to current user")
+                        .setErrorMessage(ex.getMessage())
+                        .setHttpStatus(HttpStatus.BAD_REQUEST)
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(TitleNotFoundException.class)
+    public ResponseEntity<Object> titleNotFoundExceptionHandler(TitleNotFoundException ex) {
+        return mapToResponse(
+                ApiError.builder()
+                        .setSuggestedAction("Give title that exists")
+                        .setErrorMessage(ex.getMessage())
+                        .setHttpStatus(HttpStatus.BAD_REQUEST)
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(DataAccessException.class)
+    public ResponseEntity<Object> dataAccessExceptionHandler(DataAccessException ex) {
+        return mapToResponse(
+                ApiError.builder()
+                        .setErrorMessage("Error occurred during database operation (" + ex.getMessage() + ")")
+                        .setHttpStatus(HttpStatus.BAD_REQUEST)
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> defaultExceptionHandler(Exception ex) {
+        return mapToResponse(
+                ApiError.builder()
+                        .setErrorMessage("Unexpected error occurred (" + ")")
                         .setHttpStatus(HttpStatus.BAD_REQUEST)
                         .build()
         );
