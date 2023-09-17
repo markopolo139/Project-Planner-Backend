@@ -40,10 +40,11 @@ dependencies {
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
 	testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.2")
+	testImplementation("org.awaitility:awaitility:3.1.2")
 
 	implementation("org.springframework.boot:spring-boot-starter-log4j2")
-
 	implementation("com.google.firebase:firebase-admin:9.0.0")
+
 	configurations {
 		all{
 			exclude(module = "spring-boot-starter-logging")
