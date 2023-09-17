@@ -3,20 +3,17 @@ package pl.ms.projectoverview.app.services;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
-import pl.ms.projectoverview.app.entitites.Project;
 import pl.ms.projectoverview.app.entitites.ProjectPlan;
 import pl.ms.projectoverview.app.entitites.ProjectStatus;
 import pl.ms.projectoverview.app.exceptions.NotCurrentUserProjectException;
 import pl.ms.projectoverview.app.exceptions.NotCurrentUserProjectPlanException;
 import pl.ms.projectoverview.app.exceptions.TitleNotFoundException;
 import pl.ms.projectoverview.app.exceptions.UserNotFoundException;
-import pl.ms.projectoverview.app.persistence.converters.ProjectConverter;
-import pl.ms.projectoverview.app.persistence.converters.ProjectPlanConverter;
+import pl.ms.projectoverview.app.converters.ProjectPlanConverter;
 import pl.ms.projectoverview.app.persistence.entities.ProjectEntity;
 import pl.ms.projectoverview.app.persistence.entities.ProjectPlanEntity;
 import pl.ms.projectoverview.app.persistence.entities.UserEntity;
 import pl.ms.projectoverview.app.persistence.repositories.ProjectPlanRepository;
-import pl.ms.projectoverview.app.persistence.repositories.ProjectRepository;
 import pl.ms.projectoverview.app.persistence.repositories.UserRepository;
 
 import java.time.LocalDateTime;
@@ -74,15 +71,15 @@ public class ProjectPlanService {
     }
 
     public List<ProjectPlan> filterQuery(String language) {
-        return mProjectPlanConverter.convertToApp(mProjectPlanRepository.filterQuery(userId, language));
+        return mProjectPlanConverter.convertEntityToApp(mProjectPlanRepository.filterQuery(userId, language));
     }
 
     public List<ProjectPlan> getUserProjectPlans() {
-        return mProjectPlanConverter.convertToApp(mProjectPlanRepository.findAllByUser_UserId(userId));
+        return mProjectPlanConverter.convertEntityToApp(mProjectPlanRepository.findAllByUser_UserId(userId));
     }
 
     public ProjectPlan getByTitle(String title) throws TitleNotFoundException, NotCurrentUserProjectException {
-        ProjectPlan plan = mProjectPlanConverter.convertToApp(
+        ProjectPlan plan = mProjectPlanConverter.convertEntityToApp(
                 mProjectPlanRepository.findByTitle(title).orElseThrow(TitleNotFoundException::new)
         );
         if (!mProjectPlanRepository.existsByProjectPlanIdAndUser_UserId(plan.getProjectPlanId(), userId)) {

@@ -8,7 +8,7 @@ import pl.ms.projectoverview.app.entitites.ProjectStatus;
 import pl.ms.projectoverview.app.exceptions.NotCurrentUserProjectException;
 import pl.ms.projectoverview.app.exceptions.TitleNotFoundException;
 import pl.ms.projectoverview.app.exceptions.UserNotFoundException;
-import pl.ms.projectoverview.app.persistence.converters.ProjectConverter;
+import pl.ms.projectoverview.app.converters.ProjectConverter;
 import pl.ms.projectoverview.app.persistence.entities.ProjectEntity;
 import pl.ms.projectoverview.app.persistence.entities.UserEntity;
 import pl.ms.projectoverview.app.persistence.repositories.ProjectRepository;
@@ -68,7 +68,7 @@ public class ProjectService {
             String language, LocalDateTime dateOfStartBeginning, LocalDateTime dateOfStartEnding,
             Boolean isCurrentProject, ProjectStatus projectStatus
     ) {
-        return mProjectConverter.convertToApp(
+        return mProjectConverter.convertEntityToApp(
                 mProjectRepository.filterQuery(
                         userId, language, dateOfStartBeginning, dateOfStartEnding, isCurrentProject, projectStatus
                 )
@@ -76,11 +76,11 @@ public class ProjectService {
     }
 
     public List<Project> getUserProjects() {
-        return mProjectConverter.convertToApp(mProjectRepository.findAllByUser_UserId(userId));
+        return mProjectConverter.convertEntityToApp(mProjectRepository.findAllByUser_UserId(userId));
     }
 
     public Project getByTitle(String title) throws TitleNotFoundException, NotCurrentUserProjectException {
-        Project project = mProjectConverter.convertToApp(
+        Project project = mProjectConverter.convertEntityToApp(
                 mProjectRepository.findByTitle(title).orElseThrow(TitleNotFoundException::new)
         );
         if (!mProjectRepository.existsByProjectIdAndUser_UserId(project.getProjectId(), userId)) {

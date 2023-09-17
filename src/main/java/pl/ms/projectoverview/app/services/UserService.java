@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.ms.projectoverview.app.exceptions.UserAlreadyExistsException;
 import pl.ms.projectoverview.app.exceptions.UserNotFoundException;
-import pl.ms.projectoverview.app.persistence.converters.UserConverter;
+import pl.ms.projectoverview.app.converters.UserConverter;
 import pl.ms.projectoverview.app.persistence.entities.UserEntity;
 import pl.ms.projectoverview.app.persistence.repositories.UserRepository;
 
@@ -40,7 +40,7 @@ public class UserService implements UserDetailsService {
         }
 
         try {
-            return mUserConverter.convertToApp(mUserRepository.findByUsername(username).orElseThrow());
+            return mUserConverter.convertEntityToApp(mUserRepository.findByUsername(username).orElseThrow());
         } catch (NoSuchElementException ex) {
             mLogger.error("Given username is not present");
             throw new UsernameNotFoundException("Given username is not present");
@@ -54,7 +54,7 @@ public class UserService implements UserDetailsService {
         }
 
         try {
-            return mUserConverter.convertToApp(mUserRepository.findById(id).orElseThrow());
+            return mUserConverter.convertEntityToApp(mUserRepository.findById(id).orElseThrow());
         } catch (NoSuchElementException ex) {
             mLogger.error("Given username is not present");
             throw new UserNotFoundException();

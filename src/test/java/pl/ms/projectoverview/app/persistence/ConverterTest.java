@@ -7,11 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import pl.ms.projectoverview.app.entitites.Project;
 import pl.ms.projectoverview.app.entitites.ProjectPlan;
 import pl.ms.projectoverview.app.entitites.ProjectStatus;
-import pl.ms.projectoverview.app.persistence.converters.ProjectConverter;
-import pl.ms.projectoverview.app.persistence.converters.ProjectPlanConverter;
+import pl.ms.projectoverview.app.converters.ProjectConverter;
+import pl.ms.projectoverview.app.converters.ProjectPlanConverter;
 import pl.ms.projectoverview.app.persistence.entities.ProjectEntity;
 import pl.ms.projectoverview.app.persistence.entities.ProjectPlanEntity;
-import pl.ms.projectoverview.app.persistence.repositories.ProjectPlanRepository;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -50,7 +49,7 @@ public class ConverterTest {
 
     @Test
     void testProjectConverter() {
-        Project convertedApp = mProjectConverter.convertToApp(projectEntity);
+        Project convertedApp = mProjectConverter.convertEntityToApp(projectEntity);
         ProjectEntity convertedEntity = mProjectConverter.convertToEntity(project);
 
         Assertions.assertEquals(project, convertedApp);
@@ -59,7 +58,7 @@ public class ConverterTest {
 
     @Test
     void testProjectPlanConverter() {
-        ProjectPlan convertedApp = mProjectPlanConverter.convertToApp(projectPlanEntity);
+        ProjectPlan convertedApp = mProjectPlanConverter.convertEntityToApp(projectPlanEntity);
         ProjectPlanEntity convertedEntity = mProjectPlanConverter.convertToEntity(projectPlan);
 
         Assertions.assertEquals(projectPlan, convertedApp);
