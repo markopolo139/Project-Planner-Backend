@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -48,7 +49,7 @@ public class SecurityConfiguration {
             .userDetailsService(mUserService)
             .authorizeHttpRequests(
                     (customizer) -> customizer
-                            .requestMatchers("/auth", "/api/v1/user/create", "/recoverPwd")
+                            .requestMatchers("/auth", "/api/v1/user/create", "/recoverPwd", "/error")
                             .permitAll()
                             .anyRequest().authenticated()
             );

@@ -52,21 +52,27 @@ public class TokenService {
         try {
             String token = extractTokenFromRequest(getCurrentRequest());
 
+            if (token == null) {
+                return null;
+            }
+
             return Integer.valueOf(
                     configure(Jwts.parserBuilder()).build().parseClaimsJws(token).getBody().getSubject()
             );
 
         } catch (NullPointerException e) {
             mLogger.warn("Not current request found");
+            return null;
         } catch (ExpiredJwtException e) {
             mLogger.debug("Token authentication failed due to expired token");
+            return null;
         } catch (SecurityException e) {
             mLogger.warn("Token authentication failed due invalid signature");
+            return null;
         } catch (JwtException e) {
             mLogger.debug("Token authentication failed due to exception: $e");
+            return null;
         }
-
-        return null;
     }
 
     public Integer extractIdFromToken(String token) {
@@ -91,6 +97,10 @@ public class TokenService {
     public boolean isPasswordRecoveryToken() {
         try {
             String token = extractTokenFromRequest(getCurrentRequest());
+
+            if (token == null) {
+                return false;
+            }
 
             return Objects.requireNonNull(
                     configure(Jwts.parserBuilder())
