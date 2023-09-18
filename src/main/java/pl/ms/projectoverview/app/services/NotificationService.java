@@ -3,10 +3,12 @@ package pl.ms.projectoverview.app.services;
 import com.google.firebase.messaging.FirebaseMessaging;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Service;
 import pl.ms.projectoverview.app.exceptions.UserNotFoundException;
 import pl.ms.projectoverview.app.persistence.entities.UserEntity;
 import pl.ms.projectoverview.app.persistence.repositories.UserRepository;
 
+@Service
 public class NotificationService {
 
     private final Logger mLogger = LogManager.getLogger();
