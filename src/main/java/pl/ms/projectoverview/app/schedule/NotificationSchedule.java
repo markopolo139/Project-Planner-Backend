@@ -33,6 +33,7 @@ public class NotificationSchedule {
 
     @Scheduled(cron = "0 0 12 * * ?")
     public void sendNotifications() {
+        mLogger.info("Entering scheduled task");
         List<Project> projects = convertEntityToApp(mProjectRepository.findAllForNotification());
         projects.forEach((it) -> {
             try {
