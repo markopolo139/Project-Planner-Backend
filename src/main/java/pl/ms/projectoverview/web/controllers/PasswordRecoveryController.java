@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.ms.projectoverview.app.exceptions.InvalidJwtTokenException;
@@ -24,11 +25,13 @@ public class PasswordRecoveryController {
         mPasswordRecoveryService = passwordRecoveryService;
     }
 
+    @PostMapping("/recoverPwd")
     public void sendMessage(@RequestParam("email") @Valid @Email String email)
             throws UserNotFoundException, MessagingException {
         mPasswordRecoveryService.sendMessage(email);
     }
 
+    @PostMapping("/api/v1/change/password")
     public void changePassword(@RequestParam("newPassword") @Valid @MyPasswordValidator String newPassword)
             throws UserNotFoundException, InvalidJwtTokenException {
         mPasswordRecoveryService.changePassword(newPassword);

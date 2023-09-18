@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
+import pl.ms.projectoverview.app.exceptions.UserNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -95,8 +96,8 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         );
     }
 
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<Object> usernameNotFoundExceptionHandler(UsernameNotFoundException ex) {
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Object> usernameNotFoundExceptionHandler(UserNotFoundException ex) {
         return mapToResponse(
                 ApiError.builder()
                         .setSuggestedAction("Type correct username")
@@ -161,11 +162,21 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         );
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> badCredentialsExceptionHandler(BadCredentialsException ex) {
+        return mapToResponse(
+                ApiError.builder()
+                        .setErrorMessage("Invalid credentials")
+                        .setHttpStatus(HttpStatus.BAD_REQUEST)
+                        .build()
+        );
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> defaultExceptionHandler(Exception ex) {
         return mapToResponse(
                 ApiError.builder()
-                        .setErrorMessage("Unexpected error occurred (" + ")")
+                        .setErrorMessage("Unexpected error occurred (" + ex.getMessage() + ")")
                         .setHttpStatus(HttpStatus.BAD_REQUEST)
                         .build()
         );
