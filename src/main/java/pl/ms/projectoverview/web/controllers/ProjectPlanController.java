@@ -51,7 +51,9 @@ public class ProjectPlanController {
     }
 
     @GetMapping("/api/v1/project/plan/filter")
-    public List<ProjectPlanModel> filterQuery(@RequestParam("language") @Valid @NotBlank String language) {
+    public List<ProjectPlanModel> filterQuery(
+            @RequestParam(name = "language", required = false) @Valid @NotBlank String language
+    ) {
         return convertToModel(mProjectPlanService.filterQuery(language));
     }
 

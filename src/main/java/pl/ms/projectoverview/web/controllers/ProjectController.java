@@ -3,6 +3,7 @@ package pl.ms.projectoverview.web.controllers;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.ms.projectoverview.app.converters.ProjectConverter;
@@ -49,11 +50,13 @@ public class ProjectController {
 
     @GetMapping("/api/v1/project/filter")
     public List<ProjectModel> filterQuery(
-            @Param("language") String language,
-            @Param("dateOfStartBeginning") LocalDateTime dateOfStartBeginning,
-            @Param("dateOfStartEnding") LocalDateTime dateOfStartEnding,
-            @Param("isCurrentProject") Boolean isCurrentProject,
-            @Param("projectStatus") ProjectStatus projectStatus
+            @RequestParam(name = "language", required = false) String language,
+            @RequestParam(name = "dateOfStartBeginning", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateOfStartBeginning,
+            @RequestParam(name = "dateOfStartEnding", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateOfStartEnding,
+            @RequestParam(name = "isCurrentProject", required = false) Boolean isCurrentProject,
+            @RequestParam(name = "projectStatus", required = false) ProjectStatus projectStatus
     ) {
         return convertToModel(mProjectService.filterQuery(
                 language,dateOfStartBeginning,dateOfStartEnding,isCurrentProject, projectStatus
