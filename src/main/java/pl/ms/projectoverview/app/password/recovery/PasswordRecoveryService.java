@@ -28,6 +28,7 @@ public class PasswordRecoveryService {
     private final Logger mLogger = LogManager.getLogger();
     private final String FROM = "spring assistant";
     private final String PATH = "/change/password?token=";
+    private final String PORT = ":3000";
 
     @Value("${spring.mail.username}")
     private String emailFrom;
@@ -59,7 +60,9 @@ public class PasswordRecoveryService {
         }
 
         prepareMessage(
-                email, getServerAddress() + PATH + mTokenService.createPasswordRecoveryToken(user.get().getUserId())
+                email, getServerAddress() + PATH + mTokenService.createPasswordRecoveryToken(
+                        user.get().getUserId()
+                )
         );
     }
 
@@ -97,7 +100,7 @@ public class PasswordRecoveryService {
     }
 
     private String getServerAddress() {
-        return mRequest.getRequestURL().toString().replace(mRequest.getRequestURI(),"");
+        return mRequest.getRequestURL().toString().replace(mRequest.getRequestURI(),"").replace(":4200", PORT);
     }
 
 }
