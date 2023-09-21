@@ -27,7 +27,7 @@ import java.util.Optional;
 public class PasswordRecoveryService {
     private final Logger mLogger = LogManager.getLogger();
     private final String FROM = "spring assistant";
-    private final String PATH = "/api/v1/change/password?token=";
+    private final String PATH = "/change/password?token=";
 
     @Value("${spring.mail.username}")
     private String emailFrom;
