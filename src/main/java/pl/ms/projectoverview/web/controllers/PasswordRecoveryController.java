@@ -14,6 +14,8 @@ import pl.ms.projectoverview.app.exceptions.UserNotFoundException;
 import pl.ms.projectoverview.app.password.recovery.PasswordRecoveryService;
 import pl.ms.projectoverview.web.validators.MyPasswordValidator;
 
+import java.io.UnsupportedEncodingException;
+
 @RestController
 @CrossOrigin
 @Validated
@@ -27,7 +29,7 @@ public class PasswordRecoveryController {
 
     @PostMapping("/recoverPwd")
     public void sendMessage(@RequestParam("email") @Valid @Email String email)
-            throws UserNotFoundException, MessagingException {
+            throws UserNotFoundException, MessagingException, UnsupportedEncodingException {
         mPasswordRecoveryService.sendMessage(email);
     }
 

@@ -21,6 +21,7 @@ import pl.ms.projectoverview.app.persistence.entities.UserEntity;
 import pl.ms.projectoverview.app.persistence.repositories.UserRepository;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
 @Service
@@ -51,7 +52,7 @@ public class PasswordRecoveryService {
     @Autowired
     private HttpServletRequest mRequest;
 
-    public void sendMessage(String email) throws UserNotFoundException, MessagingException {
+    public void sendMessage(String email) throws UserNotFoundException, MessagingException, UnsupportedEncodingException {
         Optional<UserEntity> user = mUserRepository.findByEmail(email);
 
         if(user.isEmpty()) {
@@ -66,14 +67,14 @@ public class PasswordRecoveryService {
         );
     }
 
-    private void prepareMessage(String email, String recoveryPath) throws MessagingException {
+    private void prepareMessage(String email, String recoveryPath) throws MessagingException, UnsupportedEncodingException {
 
         Context context = new Context();
         context.setVariable("sendPath", recoveryPath);
 
         MimeMessage mimeMessage = mJavaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-        helper.setFrom(FROM);
+        helper.setFrom(emailFrom, FROM);
         helper.setTo(email);
         helper.addInline("image", new File("/src/main/kotlin/resources/static/forgotPasswordImage.png"));
         helper.setSubject("Password recovery email");
