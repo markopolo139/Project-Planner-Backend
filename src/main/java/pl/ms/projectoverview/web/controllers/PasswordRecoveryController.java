@@ -31,7 +31,7 @@ public class PasswordRecoveryController {
         mPasswordRecoveryService.sendMessage(email);
     }
 
-    @PostMapping("/api/v1/change/password")
+    @PostMapping("/change/password")
     public void changePassword(@RequestParam("newPassword") @Valid @MyPasswordValidator String newPassword)
             throws UserNotFoundException, InvalidJwtTokenException {
         mPasswordRecoveryService.changePassword(newPassword);
