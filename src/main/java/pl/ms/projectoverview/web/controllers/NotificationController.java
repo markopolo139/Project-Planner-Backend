@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pl.ms.projectoverview.app.exceptions.NotificationTokenAlreadyAddedException;
 import pl.ms.projectoverview.app.exceptions.UserNotFoundException;
 import pl.ms.projectoverview.app.services.NotificationService;
 
@@ -19,7 +20,8 @@ public class NotificationController {
     }
 
     @PostMapping("/api/v1/notification/add")
-    public void addToken(@RequestParam("token") @Valid @NotBlank String token) throws UserNotFoundException {
+    public void addToken(@RequestParam("token") @Valid @NotBlank String token)
+            throws UserNotFoundException, NotificationTokenAlreadyAddedException {
         mNotificationService.addToken(token);
     }
 

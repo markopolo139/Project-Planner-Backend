@@ -38,7 +38,10 @@ public class NotificationSchedule {
         projects.forEach((it) -> {
             try {
                 mFirebaseMessaging.send(createNotification(
-                        it.getTitle(), LocalDateTime.now().until(it.getDeadline(), ChronoUnit.DAYS)
+                        it.getTitle(), LocalDateTime.now().until(it.getDeadline(), ChronoUnit.DAYS),
+                        it.getGithubLink()
+                                .replace("https://github.com/", "")
+                                .replace("/" + it.getTitle(), "")
                 ));
             } catch (FirebaseMessagingException e) {
                 mLogger.error("Error occurred during sending notifications via firebase");
@@ -47,11 +50,11 @@ public class NotificationSchedule {
         });
     }
 
-    private Message createNotification(String title, long daysLeft) {
+    private Message createNotification(String title, long daysLeft, String username) {
         String notificationBody = daysLeft == 0 ? "Today is deadline" : "Deadline approaching: " + daysLeft + " days left";
 
         Notification notification = Notification.builder()
-                .setTitle(title)
+                .setTitle("Username: " + username + " Title: " + title)
                 .setBody(notificationBody)
                 .build();
 

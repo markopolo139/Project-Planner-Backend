@@ -152,6 +152,17 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         );
     }
 
+    @ExceptionHandler(NotificationTokenAlreadyAddedException.class)
+    public ResponseEntity<Object> notificationTokenAlreadyAddedExceptionHandler(NotificationTokenAlreadyAddedException ex) {
+        return mapToResponse(
+                ApiError.builder()
+                        .setSuggestedAction("Don't add this token")
+                        .setErrorMessage(ex.getMessage())
+                        .setHttpStatus(HttpStatus.BAD_REQUEST)
+                        .build()
+        );
+    }
+
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<Object> dataAccessExceptionHandler(DataAccessException ex) {
         return mapToResponse(

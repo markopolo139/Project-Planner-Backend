@@ -23,6 +23,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @Query("select u from UserEntity u left join fetch u.projectPlans where u.userId = :userId")
     UserEntity fetchProjectPlans(@Param("userId") Integer userId);
 
+    Boolean existsByUserIdAndNotificationTokensContaining(Integer userId, String token);
+
     @Modifying
     @Transactional
     void deleteByEmail(String email);
