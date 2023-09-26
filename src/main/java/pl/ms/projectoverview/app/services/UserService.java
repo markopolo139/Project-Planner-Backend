@@ -7,9 +7,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.ms.projectoverview.app.exceptions.EmailAlreadyExistsException;
 import pl.ms.projectoverview.app.exceptions.UserAlreadyExistsException;
 import pl.ms.projectoverview.app.exceptions.UserNotFoundException;
 import pl.ms.projectoverview.app.converters.UserConverter;
+import pl.ms.projectoverview.app.exceptions.UsernameAlreadyExistsException;
 import pl.ms.projectoverview.app.persistence.entities.UserEntity;
 import pl.ms.projectoverview.app.persistence.repositories.UserRepository;
 
@@ -74,6 +76,34 @@ public class UserService implements UserDetailsService {
         );
 
         mUserRepository.save(newUser);
+    }
+
+    public void changeUsername(String username) throws UserNotFoundException, UsernameAlreadyExistsException {
+        if (mUserRepository.existsByUsername(username))
+            throw new UsernameAlreadyExistsException();
+
+        UserEntity user = AppUtils.getCurrentUser(mUserRepository);
+        user.setUsername(username);
+        mUserRepository.save(user);
+    }
+
+    public void changePassword(String password) throws UserNotFoundException {
+        UserEntity user = AppUtils.getCurrentUser(mUserRepository);
+        user.setPassword(mPasswordEncoder.encode(password));
+        mUserRepository.save(user);
+    }
+
+    public void changeEmail(String email) throws UserNotFoundException, EmailAlreadyExistsException {
+        if (mUserRepository.existsByEmail(email))
+            throw new EmailAlreadyExistsException();
+
+        UserEntity user = AppUtils.getCurrentUser(mUserRepository);
+        user.setEmail(email);
+        mUserRepository.save(user);
+    }
+
+    public String getEmail() throws UserNotFoundException {
+        return AppUtils.getCurrentUser(mUserRepository).getEmail();
     }
 
     public void deleteUser() {

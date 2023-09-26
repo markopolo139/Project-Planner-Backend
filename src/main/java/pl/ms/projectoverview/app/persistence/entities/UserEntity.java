@@ -93,6 +93,10 @@ public class UserEntity {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public Set<String> getRoles() {
         return roles;
     }
@@ -119,6 +123,10 @@ public class UserEntity {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Boolean hasNotificationToken() {

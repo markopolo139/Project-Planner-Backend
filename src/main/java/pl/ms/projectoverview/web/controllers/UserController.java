@@ -1,9 +1,13 @@
 package pl.ms.projectoverview.web.controllers;
 
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pl.ms.projectoverview.app.exceptions.EmailAlreadyExistsException;
 import pl.ms.projectoverview.app.exceptions.UserAlreadyExistsException;
+import pl.ms.projectoverview.app.exceptions.UserNotFoundException;
+import pl.ms.projectoverview.app.exceptions.UsernameAlreadyExistsException;
 import pl.ms.projectoverview.app.services.UserService;
 import pl.ms.projectoverview.web.models.request.CreateUserModel;
 
@@ -27,4 +31,25 @@ public class UserController {
     public void deleteUser() {
         mUserService.deleteUser();
     }
+
+    @PutMapping("/api/v1/user/change/username")
+    public void changeUsername(@RequestParam("username") String username) throws UserNotFoundException, UsernameAlreadyExistsException {
+        mUserService.changeUsername(username);
+    }
+
+    @PutMapping("/api/v1/user/change/password")
+    public void changePassword(@RequestParam("password") String password) throws UserNotFoundException {
+        mUserService.changePassword(password);
+    }
+
+    @PutMapping("/api/v1/user/change/email")
+    public void changeEmail(@RequestParam("email") String email) throws UserNotFoundException, EmailAlreadyExistsException {
+        mUserService.changeEmail(email);
+    }
+
+    @GetMapping("/api/v1/user/email")
+    public String getEmail() throws UserNotFoundException {
+        return mUserService.getEmail();
+    }
+
 }

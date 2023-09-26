@@ -163,6 +163,28 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         );
     }
 
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<Object> usernameAlreadyExistsExceptionHandler(UsernameAlreadyExistsException ex) {
+        return mapToResponse(
+                ApiError.builder()
+                        .setSuggestedAction("Use another username")
+                        .setErrorMessage(ex.getMessage())
+                        .setHttpStatus(HttpStatus.BAD_REQUEST)
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<Object> emailAlreadyExistsExceptionHandler(EmailAlreadyExistsException ex) {
+        return mapToResponse(
+                ApiError.builder()
+                        .setSuggestedAction("Use another email")
+                        .setErrorMessage(ex.getMessage())
+                        .setHttpStatus(HttpStatus.BAD_REQUEST)
+                        .build()
+        );
+    }
+
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<Object> dataAccessExceptionHandler(DataAccessException ex) {
         return mapToResponse(

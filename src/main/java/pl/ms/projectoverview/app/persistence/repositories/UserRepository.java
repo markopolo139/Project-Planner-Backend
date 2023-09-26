@@ -25,6 +25,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     Boolean existsByUserIdAndNotificationTokensContaining(Integer userId, String token);
 
+    Boolean existsByEmail(String email);
+
+    Boolean existsByUsername(String username);
+
     @Modifying
     @Transactional
     void deleteByEmail(String email);
