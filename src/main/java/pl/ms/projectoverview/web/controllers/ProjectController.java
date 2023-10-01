@@ -37,7 +37,7 @@ public class ProjectController {
         mProjectService.createProject(convertModelToApp(projectModel));
     }
 
-    @PutMapping("/api/v1/project/create/list")
+    @PostMapping("/api/v1/project/create/list")
     public void createProjects(@RequestBody List<@Valid ProjectModel> projectModel) throws UserNotFoundException {
         mProjectService.createProjects(convertModelToApp(projectModel));
     }
