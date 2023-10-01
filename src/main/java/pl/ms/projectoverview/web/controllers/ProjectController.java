@@ -42,7 +42,7 @@ public class ProjectController {
         mProjectService.createProjects(convertModelToApp(projectModel));
     }
 
-    @DeleteMapping("/api/v1/project/update")
+    @PutMapping("/api/v1/project/update")
     public void updateProject(@RequestBody @Valid ProjectModel projectModel)
             throws UserNotFoundException, NotCurrentUserProjectException {
         mProjectService.updateProject(convertModelToApp(projectModel));
