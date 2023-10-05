@@ -25,7 +25,7 @@ public class ProjectConverter {
                 appEntity.getProjectId(), appEntity.getGithubLink(), appEntity.getTitle(),
                 appEntity.getDescription(), appEntity.getLanguage(), appEntity.getDeadline(),
                 appEntity.getDateOfStart(), appEntity.isCurrent(), appEntity.getProjectStatus(),
-                appEntity.getFeatures(), appEntity.getGoals(), appEntity.getTechnologies( 2), null
+                appEntity.getFeatures(), appEntity.getGoals(), appEntity.getTechnologies(), null
         );
     }
 
