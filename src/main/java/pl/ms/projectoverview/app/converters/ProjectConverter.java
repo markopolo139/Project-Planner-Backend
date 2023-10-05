@@ -2,6 +2,7 @@ package pl.ms.projectoverview.app.converters;
 
 
 import pl.ms.projectoverview.app.entitites.Project;
+import pl.ms.projectoverview.app.entitites.ProjectStatus;
 import pl.ms.projectoverview.app.persistence.entities.ProjectEntity;
 import pl.ms.projectoverview.app.persistence.entities.UserEntity;
 import pl.ms.projectoverview.web.models.ProjectModel;
@@ -24,7 +25,7 @@ public class ProjectConverter {
                 appEntity.getProjectId(), appEntity.getGithubLink(), appEntity.getTitle(),
                 appEntity.getDescription(), appEntity.getLanguage(), appEntity.getDeadline(),
                 appEntity.getDateOfStart(), appEntity.isCurrent(), appEntity.getProjectStatus(),
-                appEntity.getFeatures(), appEntity.getGoals(), appEntity.getTechnologies(), null
+                appEntity.getFeatures(), appEntity.getGoals(), appEntity.getTechnologies( 2), null
         );
     }
 
@@ -44,7 +45,7 @@ public class ProjectConverter {
     public static Project convertModelToApp(ProjectModel model) {
         return new Project(
                 model.getProjectId(), model.getGithubLink(), model.getTitle(), model.getDescription(), model.getLanguage(),
-                model.getDeadline(), model.getDateOfStart(), model.getCurrent(), model.getProjectStatus(),
+                model.getDeadline(), model.getDateOfStart(), model.getCurrent(), ProjectStatus.valueOf(model.getProjectStatus()),
                 model.getFeatures(), model.getGoals(), model.getTechnologies()
         );
 
@@ -54,7 +55,7 @@ public class ProjectConverter {
         return new ProjectModel(
                 appEntity.getProjectId(), appEntity.getGithubLink(), appEntity.getTitle(),
                 appEntity.getDescription(), appEntity.getLanguage(), appEntity.getDeadline(),
-                appEntity.getDateOfStart(), appEntity.isCurrent(), appEntity.getProjectStatus(),
+                appEntity.getDateOfStart(), appEntity.isCurrent(), appEntity.getProjectStatus().toString(),
                 appEntity.getFeatures(), appEntity.getGoals(), appEntity.getTechnologies()
         );
 

@@ -28,15 +28,14 @@ public class ProjectModel {
     @Future
     private final LocalDateTime deadline;
 
-    @FutureOrPresent
+    @NotNull
     private final LocalDateTime dateOfStart;
 
     @NotNull
     private final Boolean isCurrent;
 
-    @NotNull
     @ProjectStatusValidator
-    private final ProjectStatus projectStatus;
+    private final String projectStatus;
 
     @NotNull
     private final Set<String> features;
@@ -49,7 +48,7 @@ public class ProjectModel {
 
     public ProjectModel(
             Integer projectId, String githubLink, String title, String description, String language,
-            LocalDateTime deadline, LocalDateTime dateOfStart, Boolean isCurrent, ProjectStatus projectStatus,
+            LocalDateTime deadline, LocalDateTime dateOfStart, Boolean isCurrent, String projectStatus,
             Set<String> features, Set<String> goals, Set<String> technologies
     ) {
         this.projectId = projectId;
@@ -98,7 +97,7 @@ public class ProjectModel {
         return isCurrent;
     }
 
-    public ProjectStatus getProjectStatus() {
+    public String getProjectStatus() {
         return projectStatus;
     }
 
