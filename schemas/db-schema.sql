@@ -31,7 +31,7 @@ create table if not exists projects(
     deadline datetime null,
     date_of_start datetime not null,
     is_current_project bool not null default false,
-    project_status enum('ACTIVE', 'BREAK', 'CANCELED', 'UPCOMING', 'PENDING') not null,
+    project_status enum('ACTIVE', 'BREAK', 'CANCELED', 'WORKING_ON', 'NOT_STARTED') not null,
     user_id int not null,
     constraint projects_to_user foreign key(user_id) references app_users(user_id)
         on delete CASCADE
