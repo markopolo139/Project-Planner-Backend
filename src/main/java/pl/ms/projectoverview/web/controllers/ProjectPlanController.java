@@ -12,6 +12,7 @@ import pl.ms.projectoverview.app.exceptions.NotCurrentUserProjectPlanException;
 import pl.ms.projectoverview.app.exceptions.TitleNotFoundException;
 import pl.ms.projectoverview.app.exceptions.UserNotFoundException;
 import pl.ms.projectoverview.app.services.ProjectPlanService;
+import pl.ms.projectoverview.web.models.ProjectModel;
 import pl.ms.projectoverview.web.models.ProjectPlanModel;
 import pl.ms.projectoverview.web.models.request.ProjectPlanTransformModel;
 
@@ -22,6 +23,7 @@ import java.util.Set;
 
 import static pl.ms.projectoverview.app.converters.ProjectPlanConverter.convertModelToApp;
 import static pl.ms.projectoverview.app.converters.ProjectPlanConverter.convertToModel;
+import static pl.ms.projectoverview.app.converters.ProjectConverter.convertToModel;
 
 @RestController
 @CrossOrigin
@@ -35,14 +37,14 @@ public class ProjectPlanController {
     }
 
     @PostMapping("/api/v1/project/plan/create")
-    public void createPlan(@RequestBody @Valid ProjectPlanModel planModel) throws UserNotFoundException {
-        mProjectPlanService.createPlan(convertModelToApp(planModel));
+    public ProjectPlanModel createPlan(@RequestBody @Valid ProjectPlanModel planModel) throws UserNotFoundException {
+        return convertToModel(mProjectPlanService.createPlan(convertModelToApp(planModel)));
     }
 
     @PutMapping("/api/v1/project/plan/update")
-    public void updatePlan(@RequestBody @Valid ProjectPlanModel planModel)
+    public ProjectPlanModel updatePlan(@RequestBody @Valid ProjectPlanModel planModel)
             throws UserNotFoundException, NotCurrentUserProjectPlanException {
-        mProjectPlanService.updatePlan(convertModelToApp(planModel));
+        return convertToModel(mProjectPlanService.updatePlan(convertModelToApp(planModel)));
     }
 
     @DeleteMapping("/api/v1/project/plan/delete")
@@ -69,11 +71,11 @@ public class ProjectPlanController {
     }
 
     @PostMapping("/api/v1/project/plan/transform")
-    public void transformProjectToEntity(@RequestBody @Valid ProjectPlanTransformModel model)
+    public ProjectModel transformProjectToEntity(@RequestBody @Valid ProjectPlanTransformModel model)
             throws UserNotFoundException, NotCurrentUserProjectPlanException {
-        mProjectPlanService.transformProjectToEntity(
+        return convertToModel(mProjectPlanService.transformProjectToEntity(
                 model.getPlanId(), model.getGithubLink(), model.getDescription(), model.getDeadline(),
                 model.getStartDate(), model.getTechnologies()
-        );
+        ));
     }
 }

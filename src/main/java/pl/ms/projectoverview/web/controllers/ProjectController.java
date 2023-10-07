@@ -33,19 +33,19 @@ public class ProjectController {
     }
 
     @PostMapping("/api/v1/project/create")
-    public void createProject(@RequestBody @Valid ProjectModel projectModel) throws UserNotFoundException {
-        mProjectService.createProject(convertModelToApp(projectModel));
+    public ProjectModel createProject(@RequestBody @Valid ProjectModel projectModel) throws UserNotFoundException {
+        return convertToModel(mProjectService.createProject(convertModelToApp(projectModel)));
     }
 
     @PostMapping("/api/v1/project/create/list")
-    public void createProjects(@RequestBody List<@Valid ProjectModel> projectModel) throws UserNotFoundException {
-        mProjectService.createProjects(convertModelToApp(projectModel));
+    public List<ProjectModel> createProjects(@RequestBody List<@Valid ProjectModel> projectModel) throws UserNotFoundException {
+        return convertToModel(mProjectService.createProjects(convertModelToApp(projectModel)));
     }
 
     @PutMapping("/api/v1/project/update")
-    public void updateProject(@RequestBody @Valid ProjectModel projectModel)
+    public ProjectModel updateProject(@RequestBody @Valid ProjectModel projectModel)
             throws UserNotFoundException, NotCurrentUserProjectException {
-        mProjectService.updateProject(convertModelToApp(projectModel));
+        return convertToModel(mProjectService.updateProject(convertModelToApp(projectModel)));
     }
 
     @GetMapping("/api/v1/project/filter")

@@ -3,6 +3,7 @@ package pl.ms.projectoverview.app.services;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
+import pl.ms.projectoverview.app.entitites.Project;
 import pl.ms.projectoverview.app.entitites.ProjectPlan;
 import pl.ms.projectoverview.app.entitites.ProjectStatus;
 import pl.ms.projectoverview.app.exceptions.NotCurrentUserProjectException;
@@ -22,6 +23,7 @@ import java.util.Set;
 
 import static pl.ms.projectoverview.app.converters.ProjectPlanConverter.convertEntityToApp;
 import static pl.ms.projectoverview.app.converters.ProjectPlanConverter.convertToEntity;
+import static pl.ms.projectoverview.app.converters.ProjectConverter.convertEntityToApp;
 
 @Service
 public class ProjectPlanService {
@@ -39,15 +41,16 @@ public class ProjectPlanService {
         mUserRepository = userRepository;
     }
 
-    public void createPlan(ProjectPlan projectPlan) throws UserNotFoundException {
+    public ProjectPlan createPlan(ProjectPlan projectPlan) throws UserNotFoundException {
         UserEntity loggedInUser = AppUtils.getCurrentUser(mUserRepository);
         ProjectPlanEntity newPlan = convertToEntity(projectPlan);
         loggedInUser.addProjectPlan(newPlan);
 
         mUserRepository.save(loggedInUser);
+        return convertEntityToApp(newPlan);
     }
 
-    public void updatePlan(ProjectPlan projectPlan) throws NotCurrentUserProjectPlanException, UserNotFoundException {
+    public ProjectPlan updatePlan(ProjectPlan projectPlan) throws NotCurrentUserProjectPlanException, UserNotFoundException {
         ProjectPlanEntity updateProjectPlan = convertToEntity(projectPlan);
         if (!mProjectPlanRepository.existsByProjectPlanIdAndUser_UserId(updateProjectPlan.getProjectPlanId(), AppUtils.getUserId())) {
             mLogger.error("Selected plan does not belong to currently logged in user");
@@ -56,7 +59,7 @@ public class ProjectPlanService {
         updateProjectPlan.setUser(AppUtils.getCurrentUser(mUserRepository));
 
         mProjectPlanRepository.save(updateProjectPlan);
-
+        return convertEntityToApp(updateProjectPlan);
     }
 
     public void deletePlan(Integer projectPlanId) throws NotCurrentUserProjectPlanException {
@@ -88,7 +91,7 @@ public class ProjectPlanService {
         return plan;
     }
 
-    public void transformProjectToEntity(
+    public Project transformProjectToEntity(
             Integer planId, String githubLink, String description, LocalDateTime deadline, LocalDateTime startDate,
             Set<String> technologies
     ) throws NotCurrentUserProjectPlanException, UserNotFoundException {
@@ -107,5 +110,6 @@ public class ProjectPlanService {
         loggedInUser.addProject(transformedProject);
 
         mUserRepository.save(loggedInUser);
+        return convertEntityToApp(transformedProject);
     }
 }

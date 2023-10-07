@@ -34,24 +34,25 @@ public class ProjectService {
         this.mUserRepository = userRepository;
     }
 
-    public void createProject(Project project) throws UserNotFoundException {
+    public Project createProject(Project project) throws UserNotFoundException {
         ProjectEntity newProject = convertToEntity(project);
         UserEntity loggedInUser = AppUtils.getCurrentUser(mUserRepository);
         loggedInUser.addProject(newProject);
 
         mUserRepository.save(loggedInUser);
+        return convertEntityToApp(newProject);
     }
 
-    public void createProjects(List<Project> projects) throws UserNotFoundException {
+    public List<Project> createProjects(List<Project> projects) throws UserNotFoundException {
         UserEntity loggedInUser = AppUtils.getCurrentUser(mUserRepository);
-        loggedInUser.getProjects().addAll(
-                convertToEntity(projects,loggedInUser)
-        );
+        List<ProjectEntity> projectEntities = convertToEntity(projects, loggedInUser);
+        loggedInUser.getProjects().addAll(projectEntities);
 
         mUserRepository.save(loggedInUser);
+        return convertEntityToApp(projectEntities);
     }
 
-    public void updateProject(Project project) throws UserNotFoundException, NotCurrentUserProjectException {
+    public Project updateProject(Project project) throws UserNotFoundException, NotCurrentUserProjectException {
         ProjectEntity updateProject = convertToEntity(project);
         if (!mProjectRepository.existsByProjectIdAndUser_UserId(updateProject.getProjectId(), AppUtils.getUserId())) {
             mLogger.error("Selected project does not belong to logged in user");
@@ -60,6 +61,7 @@ public class ProjectService {
         updateProject.setUser(AppUtils.getCurrentUser(mUserRepository));
 
         mProjectRepository.save(updateProject);
+        return convertEntityToApp(updateProject);
     }
 
     public List<Project> filterQuery(
