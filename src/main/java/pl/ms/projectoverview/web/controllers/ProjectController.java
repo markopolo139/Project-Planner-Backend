@@ -1,6 +1,7 @@
 package pl.ms.projectoverview.web.controllers;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -46,6 +47,11 @@ public class ProjectController {
     public ProjectModel updateProject(@RequestBody @Valid ProjectModel projectModel)
             throws UserNotFoundException, NotCurrentUserProjectException {
         return convertToModel(mProjectService.updateProject(convertModelToApp(projectModel)));
+    }
+
+    @DeleteMapping("/api/v1/project/delete")
+    public void deleteProject(@RequestParam("id") @Valid @Min(0) Integer projectId) throws NotCurrentUserProjectException {
+        mProjectService.deleteProject(projectId);
     }
 
     @GetMapping("/api/v1/project/filter")

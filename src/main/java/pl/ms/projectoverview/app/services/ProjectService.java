@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.ms.projectoverview.app.entitites.Project;
 import pl.ms.projectoverview.app.entitites.ProjectStatus;
 import pl.ms.projectoverview.app.exceptions.NotCurrentUserProjectException;
+import pl.ms.projectoverview.app.exceptions.NotCurrentUserProjectPlanException;
 import pl.ms.projectoverview.app.exceptions.TitleNotFoundException;
 import pl.ms.projectoverview.app.exceptions.UserNotFoundException;
 import pl.ms.projectoverview.app.converters.ProjectConverter;
@@ -62,6 +63,15 @@ public class ProjectService {
 
         mProjectRepository.save(updateProject);
         return convertEntityToApp(updateProject);
+    }
+
+    public void deleteProject(Integer projectId) throws NotCurrentUserProjectException {
+        if (!mProjectRepository.existsByProjectIdAndUser_UserId(projectId, AppUtils.getUserId())) {
+            mLogger.error("Selected plan does not belong to currently logged in user");
+            throw new NotCurrentUserProjectException();
+        }
+
+        mProjectRepository.deleteById(projectId);
     }
 
     public List<Project> filterQuery(
