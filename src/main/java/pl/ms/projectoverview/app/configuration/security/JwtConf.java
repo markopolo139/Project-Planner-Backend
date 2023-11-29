@@ -15,7 +15,6 @@ public class JwtConf {
 
     public static final long DEFAULT_VALIDITY = 900000L;
     public static final long DEFAULT_PASSWORD_RECOVERY_VALIDITY = 180000L;
-    public static final long DEFAULT_JOIN_GAME_VALIDITY = 540000L;
     private final Logger mLogger = LogManager.getLogger();
 
     @Value("${api.auth.token.issuer}")
