@@ -14,7 +14,6 @@ import pl.ms.projectoverview.app.exceptions.UserNotFoundException;
 import pl.ms.projectoverview.app.services.ProjectPlanService;
 import pl.ms.projectoverview.web.models.ProjectModel;
 import pl.ms.projectoverview.web.models.ProjectPlanModel;
-import pl.ms.projectoverview.web.models.request.ProjectPlanTransformModel;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -68,14 +67,5 @@ public class ProjectPlanController {
     public ProjectPlanModel getByTitle(@RequestParam("title") @Valid @NotBlank String title)
             throws TitleNotFoundException, NotCurrentUserProjectException {
         return convertToModel(mProjectPlanService.getByTitle(title));
-    }
-
-    @PostMapping("/api/v1/project/plan/transform")
-    public ProjectModel transformProjectToEntity(@RequestBody @Valid ProjectPlanTransformModel model)
-            throws UserNotFoundException, NotCurrentUserProjectPlanException {
-        return convertToModel(mProjectPlanService.transformProjectToEntity(
-                model.getPlanId(), model.getGithubLink(), model.getDescription(), model.getDeadline(),
-                model.getStartDate(), model.getTechnologies()
-        ));
     }
 }

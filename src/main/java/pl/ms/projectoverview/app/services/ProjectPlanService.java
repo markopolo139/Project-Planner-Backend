@@ -90,26 +90,4 @@ public class ProjectPlanService {
 
         return plan;
     }
-
-    public Project transformProjectToEntity(
-            Integer planId, String githubLink, String description, LocalDateTime deadline, LocalDateTime startDate,
-            Set<String> technologies
-    ) throws NotCurrentUserProjectPlanException, UserNotFoundException {
-        if (!mProjectPlanRepository.existsByProjectPlanIdAndUser_UserId(planId, AppUtils.getUserId())) {
-            mLogger.error("Selected plan does not belong to currently logged in user");
-            throw new NotCurrentUserProjectPlanException();
-        }
-        ProjectPlanEntity plan = mProjectPlanRepository.findById(planId).orElseThrow();
-
-        ProjectEntity transformedProject = new ProjectEntity(
-                0, githubLink, plan.getTitle(), description, plan.getLanguage(), deadline, startDate, false,
-                ProjectStatus.NOT_STARTED, plan.getFeatures(), plan.getGoals(), technologies, null
-        );
-
-        UserEntity loggedInUser = AppUtils.getCurrentUser(mUserRepository);
-        loggedInUser.addProject(transformedProject);
-
-        mUserRepository.save(loggedInUser);
-        return convertEntityToApp(transformedProject);
-    }
 }
