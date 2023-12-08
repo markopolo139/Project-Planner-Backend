@@ -8,6 +8,6 @@ RUN mkdir -p /backend
 
 WORKDIR /backend
 
-COPY build/libs/* /backend/project-overview-backend-1.0.jar
+COPY build/libs/project-overview-backend-1.0.jar /backend/project-overview-backend-1.0.jar
 
 CMD ["java", "-jar", "/backend/project-overview-backend-1.0.jar"]
